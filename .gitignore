@@ -1,0 +1,13 @@
+.venv
+env
+memory_database
+venv
+__pycache__/
+.env
+.idea
+*.pyc
+.venv/
+memory_database/
+venv/
+env/
+__pycache__

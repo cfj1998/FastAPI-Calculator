@@ -1,0 +1,9 @@
+.git
+git
+.venv
+env
+venv
+memory_database
+__pycache__
+.env
+
