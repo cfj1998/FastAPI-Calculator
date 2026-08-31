@@ -16,6 +16,10 @@ def set_mode(a: float, mode: str = "radians", multiply_with_pi: str ="no"):
     else:
         return a
 
+def check_for_probability_error(p: float):
+    if p < 0 or p > 1:
+        raise HTTPException(status_code=409, detail="Probability is a number between 0 and 1, inclusive.")
+
 app = FastAPI(title="Calculator", description="This is a calculator FastAPI app with"
                                               "support for complex numbers.")
 
@@ -276,6 +280,37 @@ def get_median(measurements: list[float]):
 @app.get("/mode", tags=["Statistics"])
 def get_mode(measurements: list[float]):
     return statistics.mode(measurements)
+
+@app.get("/binomial_distribution", tags=["Discrete Statistical Distributions"])
+def get_binomial_prob(n: int, p: float, x: int):
+    if x > n:
+        raise HTTPException(status_code=409, detail="n has to be larger or equal to x.")
+    if n < 0 or x < 0:
+        raise HTTPException(status_code=409, detail="Both n and x has to be positive.")
+    check_for_probability_error(p)
+    return math.comb(n, x) * (p**x) * (1-p)**(n - x)
+
+@app.get("/geometric_distribution", tags=["Discrete Probability Distributions"])
+def get_geometric_prob(p: float, x: int):
+    check_for_probability_error(p)
+    if x < 0:
+        raise HTTPException(status_code=409, detail="Number of failures  x until first success must be positive")
+    return p*((1-p)**x)
+
+@app.get("/negative_binomial_distribution", tags=["Discrete Probability Distributions"])
+def get_neg_binom_prob(p: float,x: int, r: int):
+    check_for_probability_error(p)
+    if r < 0:
+        raise HTTPException(status_code=409, detail="The number of successes r must be positive.")
+    if x < 0:
+        raise HTTPException(status_code=409, detail="The number of failures must be positive.")
+    return math.comb(x + r - 1, r - 1) * (p**r) * ((1-p)**x)
+
+@app.get("/poisson_distribution", tags=["Discrete Probability Distributions"])
+def get_poisson_prob(x: int, _lambda: float):
+    if x < 0 or _lambda < 0:
+        raise HTTPException(status_code=409, detail="Both x and lambda has to be positive.")
+    return ((math.e ** (-_lambda)) * (_lambda ** x))/math.factorial(x)
 
 @app.get("/is_prime", tags=["Prime Numbers"])
 def is_prime(n: int):
