@@ -344,6 +344,18 @@ def get_prime_factors(n: int):
         prime_factors.append(n)
         return prime_factors
 
+@app.get("/factorial", tags=["Factorial"])
+def factorial(n: int):
+    if n < 0:
+        raise HTTPException(status_code=409, detail="n must be positive")
+    return math.factorial(n)
+
+@app.get("/gamma_function_for_integers", tags=["Functions"])
+def gamma_function_for_positive_integers(n: int):
+    if n < 0:
+        raise HTTPException(status_code=409, detail="n must be positive")
+    return math.factorial(n-1)
+
 @app.get("/get_saved_numbers", tags=["Memory"])
 def get_memory(db: Session = Depends(get_db)):
     numbers = db.query(models.Memory).all()
