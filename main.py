@@ -312,6 +312,22 @@ def get_poisson_prob(x: int, _lambda: float):
         raise HTTPException(status_code=409, detail="Both x and lambda has to be positive.")
     return ((math.e ** (-_lambda)) * (_lambda ** x))/math.factorial(x)
 
+@app.get("/Normal_distribution_pdf", tags=["Continuous Probability Density Functions"])
+def normal_distribution_pdf(x: float, my: float, sigma: float):
+    return (1/(math.sqrt(math.pi)*sigma))*math.exp(-0.5*(((x-my)/sigma)**2))
+
+@app.get("/Lognormal_distribution_pdf", tags=["Continous Probability Density Functions"])
+def lognormal_distribution_pdf(x: float, my: float, sigma: float):
+    if x < 0:
+        raise HTTPException(status_code=409, detail="x has to be positive.")
+    return (1/(x*math.sqrt(2*math.pi)*sigma))*math.exp(-((math.log(x)-my)**2)/(2*sigma**2))
+
+@app.get("/Exponential_distribution_pdf", tags=["Continuous Probability Density Functions"])
+def exponential_distribution_pdf(x: float, _lambda: float):
+    if x < 0:
+        raise HTTPException(status_code=409, detail="x must be positive.")
+    return _lambda*math.exp(-_lambda * x)
+
 @app.get("/is_prime", tags=["Prime Numbers"])
 def is_prime(n: int):
     if n <= 1:
