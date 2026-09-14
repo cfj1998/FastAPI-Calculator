@@ -1,6 +1,6 @@
-This app is a calculator app made using FastAPI
-in Python. To test app you will need to provide 
-your own database connection, I have used Postgressql
+This app is a work-in-progress calculator app made using FastAPI
+in Python. To test this app you will need to provide 
+your own database connection, I have used PostgresSQL
 but you are welcome to choose what you want
 as long as it is supported by SQLAlchemy.
 
