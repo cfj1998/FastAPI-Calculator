@@ -6,4 +6,8 @@ venv
 memory_database
 __pycache__
 .env
-
+.idea
+memory_database/
+venv/
+env/
+*.pyc
