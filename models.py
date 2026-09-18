@@ -16,3 +16,11 @@ class ComplexMemory(Base):
     real = Column(Float)
     imaginary = Column(Float)
     length = Column(Float)
+
+
+# From  https://www.youtube.com/watch?v=0A_GCXBCNUQ by coding with Roby
+class Users(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    username = Column(String, unique=True)
+    hashed_password = Column(String)
