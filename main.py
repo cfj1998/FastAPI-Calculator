@@ -1,12 +1,17 @@
 import cmath
 import math
 import statistics
+from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
+from starlette import status
 
+import auth
 import models
 from database import get_db
+
+user_dependency = Annotated[dict, Depends(auth.get_current_user)]
 
 
 def set_mode(a: float, mode: str = "radians", multiply_with_pi: str = "no"):
@@ -30,11 +35,20 @@ app = FastAPI(
     title="Calculator",
     description="This is a calculator FastAPI app with" "support for complex numbers.",
 )
+app.include_router(auth.router)
 
 
 @app.get("/")
 def home():
     return f"Welcome to my FastAPICalculator"
+
+
+# Function is from https://www.youtube.com/watch?v=0A_GCXBCNUQ by coding with Roby
+@app.get("/get_user", status_code=status.HTTP_200_OK)
+async def get_user(user: user_dependency):
+    if user is None:
+        raise HTTPException(status_code=401, detail="Authentication failed")
+    return {"User": user}
 
 
 @app.get("/number", tags=["Number"])

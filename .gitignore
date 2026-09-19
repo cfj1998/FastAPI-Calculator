@@ -11,3 +11,4 @@ memory_database/
 venv/
 env/
 __pycache__
+test_users.txt
