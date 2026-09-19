@@ -506,18 +506,18 @@ def delete_from_memory(id: int, db: Session = Depends(get_db)):
 def add_from_memory(id_1: int, id_2: int, db: Session = Depends(get_db)):
     number_model1 = db.query(models.Memory).filter(models.Memory.id == id_1).first()  # type: ignore
     number_model2 = db.query(models.Memory).filter(models.Memory.id == id_2).first()  # type: ignore
-    if number_model1 or number_model2 is None:
-        raise HTTPException(status_code=404, detail="Number not found")
-    return addition(number_model1, number_model2)
+    if number_model1 is None or number_model2 is None:
+        raise HTTPException(status_code=404, detail="Number could not be found")
+    return addition(number_model1.number_saved, number_model2.number_saved)
 
 
 @app.get("/subtract_two_numbers_from_memory", tags=["Memory"])
 def subtract_from_memory(id_1: int, id_2: int, db: Session = Depends(get_db)):
     number_model1 = db.query(models.Memory).filter(models.Memory.id == id_1).first()  # type: ignore
     number_model2 = db.query(models.Memory).filter(models.Memory.id == id_2).first()  # type: ignore
-    if number_model1 or number_model2 is None:
+    if number_model1 is None or number_model2 is None:
         raise HTTPException(status_code=404, detail="Number not found")
-    return subtraction(number_model1, number_model2)
+    return subtraction(number_model1.number_saved, number_model2.number_saved)
 
 
 @app.get("/get_complex_memory", tags=["Complex Memory"])
