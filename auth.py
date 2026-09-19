@@ -1,7 +1,7 @@
 # Most of the code in the file is from
-# https://www.youtube.com/watch?v=0A_GCXBCNUQ by coding with Eric Roby
+# https://www.youtube.com/watch?v=0A_GCXBCNUQ by Eric Roby
 # Certain changes have been made like using argon2 instead of bcrypt and
-# adding a way for user to be deleted.
+# adding a way for users to be deleted.
 
 import os
 from datetime import datetime, timedelta, timezone
